@@ -14,7 +14,7 @@ function MusicInfo(props) {
     <Container style={{ 'margin-top': 40 }}>
       <Row>
         <Col xs={6} md={4}>
-          <a href={trackLink}>
+          <a href={trackLink} target="_blank" rel="noopener noreferrer">
             <Image src={albumImgUrl} thumbnail fluid />
           </a>
         </Col>
@@ -38,4 +38,4 @@ MusicInfo.propTypes = {
   })
 }
 
-  export default MusicInfo;
+export default MusicInfo;
