@@ -14,7 +14,8 @@ class App extends Component {
     this.state = {
       artistQuery: '',
       phoneNumber: '',
-      trackDetails: null
+      trackDetails: null,
+      isLoading: false
     }
 
     this.handleArtistQueryChange = this.handleArtistQueryChange.bind(this);
@@ -22,7 +23,7 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  async handleSubmit(e) {
+  handleSubmit(e) {
     e.preventDefault();
 
     if (this.state.submitted) {
@@ -33,11 +34,14 @@ class App extends Component {
         trackDetails: null,
       })
     } else {
-      const trackDetails = await getTrackDetailsAndText(this.state.artistQuery, this.state.phoneNumber)
+      this.setState({ isLoading: true }, async () => {
+        const trackDetails = await getTrackDetailsAndText(this.state.artistQuery, this.state.phoneNumber)
 
-      this.setState({
-        trackDetails,
-        submitted: true
+        this.setState({
+          trackDetails,
+          isLoading: false,
+          submitted: true
+        })
       })
     }
   }
@@ -93,6 +97,7 @@ class App extends Component {
                 variant={!this.state.submitted ? 'primary' : 'outline-success'}
                 type="submit"
                 onClick={this.handleSubmit}
+                disabled={this.state.isLoading}
               >
                 {!this.state.submitted ? 'Submit' : 'Success! Click to clear.'}
               </Button>
