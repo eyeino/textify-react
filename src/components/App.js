@@ -7,6 +7,8 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 
+import './app.css';
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -32,6 +34,7 @@ class App extends Component {
       this.setState({
         submitted: false,
         trackDetails: null,
+        artistQuery: ''
       })
     } else {
       this.setState({ isLoading: true }, async () => {
@@ -64,13 +67,13 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div className='app'>
         <Container style={{ margin: 40 }}>
           <Row>
-            <h1>Textify</h1>
+            <h1>T E X T I F Y</h1>
           </Row>
           <Row>
-            <h2>Get an artists top song sent to your phone!</h2>
+            <h4>Get an artists top song sent to your phone!</h4>
           </Row>
           <Row>
             <Form>

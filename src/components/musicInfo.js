@@ -13,15 +13,15 @@ function MusicInfo(props) {
   return (
     <Container style={{ 'marginTop': 40 }}>
       <Row>
-        <Col xs={6} md={4}>
+        <Col xs={4} md={2} lg={2}>
           <a href={trackLink} target="_blank" rel="noopener noreferrer">
             <Image src={albumImgUrl} thumbnail fluid />
           </a>
         </Col>
-        <Col>
-          <h2>{trackName}</h2>
-          <h4>{artistName}</h4>
-          <h4>{albumName}</h4>
+        <Col xs={6} md={4} lg={4}>
+          <h4>{trackName}</h4>
+          <h5>{artistName}</h5>
+          <h5>{albumName}</h5>
         </Col>
       </Row>
     </Container>
