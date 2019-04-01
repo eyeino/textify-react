@@ -22,7 +22,9 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  async handleSubmit() {
+  async handleSubmit(e) {
+    e.preventDefault();
+
     if (this.state.submitted) {
       this.refs.artistQuery.value = '';
 
@@ -89,7 +91,7 @@ class App extends Component {
               </Form.Group>
               <Button
                 variant={!this.state.submitted ? 'primary' : 'outline-success'}
-                type="button"
+                type="submit"
                 onClick={this.handleSubmit}
               >
                 {!this.state.submitted ? 'Submit' : 'Success! Click to clear.'}
