@@ -11,7 +11,7 @@ function MusicInfo(props) {
     trackLink, albumName, albumImgUrl } = props.trackDetails;
 
   return (
-    <Container style={{ 'margin-top': 40 }}>
+    <Container style={{ 'marginTop': 40 }}>
       <Row>
         <Col xs={6} md={4}>
           <a href={trackLink} target="_blank" rel="noopener noreferrer">
