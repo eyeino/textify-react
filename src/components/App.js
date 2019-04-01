@@ -1,59 +1,97 @@
-import React from 'react';
+import React, { Component } from 'react';
 import MusicInfo from './musicInfo';
+import getTrackDetailsAndText from '../utils/api';
 
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 
-const trackDetails = {
-  artistName: 'Toro Y Moi',
-  albumName: 'Outer Peace',
-  trackName: 'Ordinary Pleasure',
-  albumImgUrl: 'https://i.scdn.co/image/bc37539ee4ad2d9bc3fe51d96cbf443f0d44aece',
-  trackLink: 'https://open.spotify.com/track/31F0KxmTD4rz3o0tJht5RL'
-}
+class App extends Component {
+  constructor(props) {
+    super(props);
 
-function App() {
-  return (
-    <div>
-      <Container style={{ margin: 40 }}>
-        <Row>
-          <h1>Textify</h1>
-        </Row>
-        <Row>
-          <h2>Get an artists top song sent to your phone!</h2>
-        </Row>
-        <Row>
-          <SearchForm />
-        </Row>
-        <Row>
-          <MusicInfo trackDetails={trackDetails} />
-        </Row>
-      </Container>
-    </div>
-  );
-}
+    this.state = {
+      artistQuery: '',
+      phoneNumber: '',
+      trackDetails: null
+    }
 
-function SearchForm() {
-  return (
-    <Form>
-      <Form.Group controlId="formArtistQuery">
-        <Form.Label>Search artist</Form.Label>
-        <Form.Control type="search" placeholder="Enter artist name" />
-      </Form.Group>
-      <Form.Group controlId="formPhoneNumber">
-        <Form.Label>Phone number</Form.Label>
-        <Form.Control type="tel" placeholder="Enter phone number" />
-        <Form.Text className="text-muted">
-          Standard SMS text rates may apply.
-        </Form.Text>
-      </Form.Group>
-      <Button variant="primary" type="button">
-        Submit
-      </Button>
-    </Form>
-  );
+    this.handleArtistQueryChange = this.handleArtistQueryChange.bind(this);
+    this.handlePhoneNumberChange = this.handlePhoneNumberChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  async handleClick() {
+    const trackDetails = await getTrackDetailsAndText(this.state.artistQuery, this.state.phoneNumber)
+    
+    this.setState({
+      trackDetails
+    })
+  }
+
+  handleArtistQueryChange() {
+    const value = this.refs.artistQuery.value;
+    this.setState({
+      artistQuery: value
+    });
+  }
+
+  handlePhoneNumberChange() {
+    const value = this.refs.phoneNumber.value;
+    this.setState({
+      phoneNumber: value
+    })
+  }
+  
+  render() {
+    return (
+      <div>
+        <Container style={{ margin: 40 }}>
+          <Row>
+            <h1>Textify</h1>
+          </Row>
+          <Row>
+            <h2>Get an artists top song sent to your phone!</h2>
+          </Row>
+          <Row>
+            <Form>
+              <Form.Group controlId="formArtistQuery">
+                <Form.Label>Search artist</Form.Label>
+                <Form.Control
+                  type="search"
+                  ref="artistQuery"
+                  placeholder="Enter artist name"
+                  onChange={this.handleArtistQueryChange} />
+              </Form.Group>
+              <Form.Group controlId="formPhoneNumber">
+                <Form.Label>Phone number</Form.Label>
+                <Form.Control
+                  type="tel"
+                  ref="phoneNumber"
+                  placeholder="Enter phone number"
+                  onChange={this.handlePhoneNumberChange} />
+                <Form.Text className="text-muted">
+                  Standard SMS text rates may apply.
+                </Form.Text>
+              </Form.Group>
+              <Button
+                variant="primary"
+                type="button"
+                onClick={this.handleClick}
+              >
+                Submit
+              </Button>
+            </Form>
+          </Row>
+          <Row>
+            {this.state.trackDetails
+              && <MusicInfo trackDetails={this.state.trackDetails} />}
+          </Row>
+        </Container>
+      </div>
+    );
+  }
 }
 
 export default App;
