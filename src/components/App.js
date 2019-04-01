@@ -19,31 +19,43 @@ class App extends Component {
 
     this.handleArtistQueryChange = this.handleArtistQueryChange.bind(this);
     this.handlePhoneNumberChange = this.handlePhoneNumberChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  async handleClick() {
-    const trackDetails = await getTrackDetailsAndText(this.state.artistQuery, this.state.phoneNumber)
-    
-    this.setState({
-      trackDetails
-    })
+  async handleSubmit() {
+    if (this.state.submitted) {
+      this.refs.artistQuery.value = '';
+
+      this.setState({
+        submitted: false,
+        trackDetails: null,
+      })
+    } else {
+      const trackDetails = await getTrackDetailsAndText(this.state.artistQuery, this.state.phoneNumber)
+
+      this.setState({
+        trackDetails,
+        submitted: true
+      })
+    }
   }
 
   handleArtistQueryChange() {
     const value = this.refs.artistQuery.value;
     this.setState({
-      artistQuery: value
+      artistQuery: value,
+      submitted: false
     });
   }
 
   handlePhoneNumberChange() {
     const value = this.refs.phoneNumber.value;
     this.setState({
-      phoneNumber: value
+      phoneNumber: value,
+      submitted: false
     })
   }
-  
+
   render() {
     return (
       <div>
@@ -76,11 +88,11 @@ class App extends Component {
                 </Form.Text>
               </Form.Group>
               <Button
-                variant="primary"
+                variant={!this.state.submitted ? 'primary' : 'outline-success'}
                 type="button"
-                onClick={this.handleClick}
+                onClick={this.handleSubmit}
               >
-                Submit
+                {!this.state.submitted ? 'Submit' : 'Success! Click to clear.'}
               </Button>
             </Form>
           </Row>
